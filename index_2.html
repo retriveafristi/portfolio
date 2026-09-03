@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Retrivea Meakins | Product & Brand Marketing</title>
+<meta name="description" content="Portfolio of Retrivea Meakins. Product, brand and growth marketing across APAC, EMEA and North America. Campaigns, launches and go-to-market that people actually notice." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          maroon:   { DEFAULT: '#562C2C' },
+          orange:   { DEFAULT: '#F2542D' },
+          cream:    { DEFAULT: '#F5DFBB' },
+          teal:     { DEFAULT: '#0E9594' },
+          deepteal: { DEFAULT: '#127475' },
+        },
+        fontFamily: {
+          display: ['"EB Garamond"', 'serif'],
+          body: ['Jost', 'sans-serif'],
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { background:#F5DFBB; }
+
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  .eyebrow { letter-spacing: .16em; }
+
+  .card-hover { transition: transform .3s ease, box-shadow .3s ease; }
+  .card-hover:hover { transform: translateY(-5px); box-shadow: 0 16px 36px -12px rgba(86,44,44,.3); }
+
+  .mesh-glass {
+    position: relative;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(86,44,44,0.95) 0%, transparent 42%),
+      radial-gradient(circle at 90% 6%, rgba(14,149,148,0.85) 0%, transparent 46%),
+      radial-gradient(circle at 94% 62%, rgba(18,116,117,0.85) 0%, transparent 48%),
+      radial-gradient(circle at 42% 55%, rgba(242,84,45,0.95) 0%, transparent 52%),
+      radial-gradient(circle at 6% 88%, rgba(14,149,148,0.55) 0%, transparent 40%),
+      linear-gradient(160deg, #562C2C 0%, #127475 55%, #0E9594 100%);
+  }
+  .mesh-glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.35;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  .card-mesh {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 85% 12%, rgba(242,84,45,0.55) 0%, transparent 48%),
+      radial-gradient(circle at 10% 90%, rgba(86,44,44,0.5) 0%, transparent 45%),
+      linear-gradient(135deg, #0E9594 0%, #127475 100%);
+  }
+  .card-mesh::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n2)'/%3E%3C/svg%3E");
+    opacity: 0.25;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  .underline-swipe {
+    background-image: linear-gradient(#F2542D, #F2542D);
+    background-repeat: no-repeat;
+    background-size: 100% 0.24em;
+    background-position: 0 88%;
+  }
+
+  ::selection { background:#F2542D; color:#F5DFBB; }
+  :focus-visible { outline: 3px solid #F2542D; outline-offset: 3px; }
+
+  #overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(86,44,44,0.55);
+    backdrop-filter: blur(3px);
+    display: none;
+    align-items: center; justify-content: center;
+    padding: 1.25rem;
+  }
+  #overlay.open { display: flex; }
+  #modal-panel {
+    max-width: 640px; width: 100%;
+    max-height: 85vh; overflow-y: auto;
+    transform: translateY(16px) scale(0.97);
+    opacity: 0;
+    transition: transform .28s cubic-bezier(.2,.8,.2,1), opacity .28s ease;
+  }
+  #overlay.open #modal-panel {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+
+  .pill-btn {
+    cursor: pointer;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .pill-btn:hover { transform: translateY(-3px); }
+
+  .filter-chip {
+    cursor: pointer;
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+  }
+  .filter-chip[aria-pressed="true"] {
+    background-color: #F2542D;
+    border-color: #F2542D;
+    color: #F5DFBB;
+  }
+
+  .case-card { transition: opacity .25s ease, transform .25s ease; }
+  .case-card.hide { opacity: 0; transform: scale(.96); pointer-events: none; position: absolute; }
+
+  .timeline-item { position: relative; padding-left: 2rem; }
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: 0; top: .4rem;
+    width: .6rem; height: .6rem;
+    border-radius: 9999px;
+    background: #F2542D;
+  }
+  .timeline-item::after {
+    content: "";
+    position: absolute;
+    left: .28rem; top: 1rem;
+    width: 1px; bottom: -2.5rem;
+    background: rgba(245,223,187,.2);
+  }
+  .timeline-item:last-child::after { display: none; }
+</style>
+</head>
+
+<body class="font-body text-maroon antialiased">
+
+<!-- NAV -->
+<header class="sticky top-0 z-40 bg-maroon/95 backdrop-blur text-cream border-b border-cream/10">
+  <div class="max-w-6xl mx-auto px-6 md:px-10 flex items-center justify-between h-16">
+    <a href="#home" class="font-display font-semibold text-xl tracking-wide">RM<span class="text-orange">.</span></a>
+    <nav class="hidden md:flex items-center gap-8 text-xs eyebrow uppercase font-medium">
+      <a href="#about" class="hover:text-orange transition-colors">About</a>
+      <a href="#work" class="hover:text-orange transition-colors">What I do</a>
+      <a href="#experience" class="hover:text-orange transition-colors">Experience</a>
+      <a href="#contact" class="hover:text-orange transition-colors">Contact</a>
+    </nav>
+    <a href="#contact" class="text-xs uppercase tracking-wide border border-cream/40 rounded-full px-4 py-2 hover:bg-orange hover:border-orange transition-colors">
+      Let's talk
+    </a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="home" class="relative mesh-glass text-cream overflow-hidden">
+  <div class="absolute -left-32 bottom-0 w-80 h-80 rounded-full bg-orange/15 blur-3xl"></div>
+
+  <div class="max-w-6xl mx-auto px-6 md:px-10 pt-20 pb-24 md:pt-28 md:pb-32 relative z-10">
+    <p class="text-xs eyebrow uppercase text-cream/85 mb-6 font-medium">Product &amp; Brand Marketing &middot; Go-to-Market &middot; Growth Strategy</p>
+
+    <h1 class="font-display font-medium leading-[0.98] text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-8">
+      Retrivea<br/>
+      <span class="italic">Meakins</span>
+    </h1>
+
+    <p class="max-w-2xl text-lg md:text-xl text-cream/90 leading-relaxed mb-10">
+      <span class="underline-swipe font-medium">5+ years</span> turning product roadmaps and brand briefs alike into campaigns people actually respond to, from Jakarta to London to across North America. I find out what's true about the customer, then build the positioning, creative and enablement that gets the rest of the business to believe it too.
+    </p>
+
+    <div class="flex flex-wrap gap-4">
+      <a href="#work" class="bg-orange text-cream text-sm uppercase tracking-wide px-6 py-3 rounded-full hover:bg-orange/90 transition-colors font-medium">
+        View case studies
+      </a>
+      <a href="#contact" class="border border-cream/40 text-cream text-sm uppercase tracking-wide px-6 py-3 rounded-full hover:border-orange hover:text-orange transition-colors font-medium">
+        Get in touch
+      </a>
+    </div>
+
+    <p class="mt-14 text-xs text-cream/70 uppercase tracking-wide">Manchester, UK &nbsp;|&nbsp; Open to relocation</p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="max-w-6xl mx-auto px-6 md:px-10 py-20 md:py-28">
+  <div class="grid md:grid-cols-12 gap-10 md:gap-16">
+    <div class="md:col-span-4 reveal">
+      <p class="text-xs eyebrow uppercase text-deepteal mb-4 font-medium">About</p>
+      <h2 class="font-display text-3xl md:text-4xl font-medium leading-tight">I grew up answering &ldquo;where are you from?&rdquo; with a shrug: Hong Kong, Madrid, Jakarta, pick one.</h2>
+    </div>
+    <div class="md:col-span-8 reveal">
+      <p class="text-lg leading-relaxed mb-6">
+        It meant I never had a fixed idea of what &ldquo;normal&rdquo; sounds like, and that's turned out to be the actual job: the line that lands with a marketing director in London can fall flat with a rider in Jakarta, and no amount of polish fixes that if you skip the translation.
+      </p>
+      <p class="text-lg leading-relaxed mb-6">
+        I've spent my career sitting between product, sales, community and customers, turning what a team builds and what a customer actually feels into a story sales can repeat and customers can trust.
+      </p>
+      <p class="text-lg leading-relaxed mb-6">
+        That's meant building go-to-market for mobility features at GoTo Group in Jakarta, and growing subscriptions and flagship events for The Alliance across North America and Europe.
+      </p>
+      <p class="text-lg leading-relaxed mb-10">
+        Product launch or brand campaign, the method doesn't change: find out what's actually true for the customer, build the narrative and enablement that gets the rest of the business saying the same thing, then let the numbers tell me what to fix next.
+      </p>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 border-t border-maroon/15 pt-8">
+        <div>
+          <p class="font-display text-3xl font-medium text-deepteal">5+</p>
+          <p class="text-xs uppercase tracking-wide text-maroon/70 mt-1">Years in marketing</p>
+        </div>
+        <div>
+          <p class="font-display text-3xl font-medium text-deepteal">3</p>
+          <p class="text-xs uppercase tracking-wide text-maroon/70 mt-1">Regions: APAC, EMEA, NA</p>
+        </div>
+        <div>
+          <p class="font-display text-3xl font-medium text-deepteal">2 of 4</p>
+          <p class="text-xs uppercase tracking-wide text-maroon/70 mt-1">Languages spoken. Spanish &amp; Mandarin currently in progress.</p>
+        </div>
+        <div>
+          <p class="font-display text-3xl font-medium text-deepteal">PMMC</p>
+          <p class="text-xs uppercase tracking-wide text-maroon/70 mt-1">Product Marketing Certified</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT I DO: EXPERIENCE + CASE STUDIES -->
+<section id="work" class="max-w-6xl mx-auto px-6 md:px-10 py-20 md:py-28">
+  <p class="text-xs eyebrow uppercase text-deepteal mb-4 reveal font-medium">What I do</p>
+
+  <h2 class="font-display text-3xl md:text-4xl font-medium mb-4 max-w-2xl reveal">Case studies</h2>
+  <p class="text-maroon/70 mb-8 max-w-2xl reveal">Brand campaigns, product launches, growth programmes - different toolkits, same instinct. I find what's true for the customer, then make it impossible to ignore.</p>
+
+  <div id="filter-bar" class="flex flex-wrap gap-2 mb-10 reveal" role="group" aria-label="Filter case studies by discipline"></div>
+
+  <div id="case-grid" class="grid sm:grid-cols-2 gap-5 relative mb-24"></div>
+
+  <div id="experience" class="reveal bg-maroon text-cream rounded-3xl p-8 md:p-14 scroll-mt-24">
+    <p class="text-xs eyebrow uppercase text-cream/70 mb-4 font-medium">Experience</p>
+    <h2 class="font-display text-3xl md:text-4xl font-medium mb-4 max-w-2xl">Where I've been, without getting lost.</h2>
+    <div id="timeline" class="space-y-10 max-w-3xl mt-10"></div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="relative mesh-glass text-cream overflow-hidden py-20 md:py-28">
+  <div class="max-w-6xl mx-auto px-6 md:px-10 relative z-10">
+    <p class="text-xs eyebrow uppercase text-cream/75 mb-4 reveal font-medium">Skills &amp; tools</p>
+    <h2 class="font-display text-3xl md:text-4xl font-medium mb-14 max-w-2xl reveal">What I bring to the table.</h2>
+
+    <div class="grid md:grid-cols-2 gap-10">
+      <div class="reveal">
+        <h3 class="text-xs uppercase tracking-wide text-cream/75 mb-4 font-semibold">Brand &amp; Campaign</h3>
+        <div class="flex flex-wrap gap-2 mb-8">
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Brand Campaigns &amp; Manifestos</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Influencer &amp; KOL Strategy</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Social Media Management</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Integrated &amp; OOH Planning</span>
+        </div>
+        <h3 class="text-xs uppercase tracking-wide text-cream/75 mb-4 font-semibold">GTM &amp; Product Marketing</h3>
+        <div class="flex flex-wrap gap-2">
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">GTM Messaging</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Campaign Playbooks</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Product Launch Comms</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Competitive Intelligence &amp; Analysis</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Commercial Enablement</span>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:.08s">
+        <h3 class="text-xs uppercase tracking-wide text-cream/75 mb-4 font-semibold">Growth, CRM &amp; Ops</h3>
+        <div class="flex flex-wrap gap-2 mb-8">
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Segmentation &amp; A/B Testing</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Lifecycle &amp; CRM</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Stakeholder Management</span>
+        </div>
+        <h3 class="text-xs uppercase tracking-wide text-cream/75 mb-4 font-semibold">Tools &amp; Platforms</h3>
+        <div class="flex flex-wrap gap-2">
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">HubSpot</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Salesforce</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">GA4</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Intercom</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Google Workspace</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Canva</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Microsoft Office</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">HeyReach</span>
+          <span class="bg-cream/10 rounded-full px-4 py-2 text-sm">Clay</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="education" class="grid md:grid-cols-3 gap-8 mt-16 border-t border-cream/15 pt-12">
+      <div class="reveal">
+        <p class="text-xs uppercase tracking-wide text-cream/75 mb-2 font-semibold">Education</p>
+        <p class="text-sm leading-relaxed">MSc, Management of Information Systems &amp; Digital Innovation<br/><span class="text-cream/60">Warwick Business School</span></p>
+      </div>
+      <div class="reveal" style="transition-delay:.06s">
+        <p class="text-xs uppercase tracking-wide text-cream/75 mb-2 font-semibold">&nbsp;</p>
+        <p class="text-sm leading-relaxed">BSc, International Management<br/><span class="text-cream/60">University of Manchester</span></p>
+      </div>
+      <div class="reveal" style="transition-delay:.12s">
+        <p class="text-xs uppercase tracking-wide text-cream/75 mb-2 font-semibold">Certification</p>
+        <p class="text-sm leading-relaxed">Product Marketing Master Certified (PMMC)<br/><span class="text-cream/60">Product Marketing Alliance</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<footer id="contact" class="bg-cream py-20 md:py-28">
+  <div class="max-w-6xl mx-auto px-6 md:px-10 text-center">
+    <p class="text-xs eyebrow uppercase text-deepteal mb-4 reveal font-medium">Get in touch</p>
+    <h2 class="font-display text-4xl md:text-6xl font-medium mb-10 reveal">Let's build something<br/><span class="italic">worth measuring.</span></h2>
+
+    <div class="flex flex-wrap justify-center gap-4 reveal">
+      <a href="mailto:retriveafristi@gmail.com" class="bg-maroon text-cream text-sm uppercase tracking-wide px-6 py-3 rounded-full hover:bg-orange transition-colors font-medium">
+        retriveafristi@gmail.com
+      </a>
+      <a href="https://linkedin.com/in/retrivea-meakins" target="_blank" rel="noopener" class="border border-maroon/30 text-maroon text-sm uppercase tracking-wide px-6 py-3 rounded-full hover:border-deepteal hover:text-deepteal transition-colors font-medium">
+        LinkedIn &#8599;
+      </a>
+    </div>
+    <p class="text-xs text-maroon/50 mt-14 uppercase tracking-wide">Manchester, UK &nbsp;|&nbsp; Open to relocation</p>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div id="overlay">
+  <div id="modal-panel" class="bg-cream rounded-2xl shadow-2xl relative">
+    <button id="modal-close" aria-label="Close" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-maroon/10 hover:bg-orange hover:text-cream flex items-center justify-center text-maroon transition-colors">
+      &#10005;
+    </button>
+    <div id="modal-body" class="p-8 md:p-10"></div>
+  </div>
+</div>
+
+<script>
+  // ---------- Data: Experience timeline ----------
+  const timeline = [
+    {
+      dates: "Feb 2024 &ndash; Present",
+      role: "Product Marketing Executive",
+      org: "The Alliance, London",
+      blurb: "Built the webinars, workshops and lifecycle campaigns behind 3+ certification programmes, beat the revenue target doing it, and became the person media partners call first."
+    },
+    {
+      dates: "May &ndash; Sep 2023",
+      role: "Research Consultant",
+      org: "Jaguar Land Rover, Coventry",
+      blurb: "Spent a summer asking what AI means for craftsmanship in a century-old car brand, then turned focus groups and interviews into a roadmap senior stakeholders actually used."
+    },
+    {
+      dates: "Nov 2018 &ndash; Aug 2022",
+      role: "Product Marketing Executive (started as Intern)",
+      org: "GoTo Group, Jakarta",
+      blurb: "Four years, three products (GoRide, GoCar, GoTransit), one very fast-moving company. Positioning, launches and campaigns for an app used by millions, including the BTS collaboration above."
+    },
+    {
+      dates: "Sep &ndash; Oct 2018",
+      role: "Marketing Intern",
+      org: "Ear to the Ground, Manchester",
+      blurb: "First real marketing job: social listening and campaign strategy for Beats by Dre, Chelsea FC and PlayStation, six weeks after graduating."
+    },
+    {
+      dates: "Summer 2015",
+      role: "Teacher Assistant",
+      org: "AIESEC Italia, Pavia, Italy",
+      blurb: "I spent a summer in Pavia teaching English to twenty 5 to 7 year olds, building their timetable and content planning from scratch. Turns out toddler crowd control and stakeholder management have more in common than you'd think.",
+      bonus: true
+    }
+  ];
+
+  const timelineEl = document.getElementById('timeline');
+  timeline.forEach((t, i) => {
+    const item = document.createElement('div');
+    item.className = "timeline-item reveal" + (t.bonus ? " opacity-90" : "");
+    item.style.transitionDelay = (i * 0.06) + "s";
+    item.innerHTML = `
+      <p class="text-xs uppercase tracking-wide text-orange font-semibold mb-1">${t.dates}${t.bonus ? ' &middot; bonus round' : ''}</p>
+      <h3 class="font-display text-xl font-medium mb-1">${t.role}</h3>
+      <p class="text-sm text-cream/60 mb-2">${t.org}</p>
+      <p class="text-cream/85 leading-relaxed max-w-2xl">${t.blurb}</p>
+    `;
+    timelineEl.appendChild(item);
+  });
+
+  // ---------- Data: Expertise (feeds case-study filters, no separate section) ----------
+  const filters = ["All", "Brand & Campaigns", "Product Marketing", "Competitive Intelligence", "Event Marketing & Sales Enablement", "Demand Gen & Partnerships"];
+
+  const caseStudies = [
+    {
+      headline: "Member feedback was landing in the inbox and dying there, not in the pitch sales used to renew them.",
+      statChip: "+12.73% vs. revenue target",
+      title: "Membership Subscription &amp; Sales Enablement",
+      org: "The Alliance, London &middot; Product Marketing Executive",
+      tags: ["Event Marketing", "Sales Enablement"],
+      categories: ["Product Marketing", "Event Marketing & Sales Enablement"],
+      challenge: "The Alliance runs paid membership tiers for professionals across different industries, and growth depends on members feeling the value fast enough to renew and upgrade. Feedback from support and community touchpoints was rich, but it stayed in marketing's inbox instead of shaping the pitch sales actually used.",
+      approach: "I turned that feedback into the sales team's enablement toolkit. Partnering with customer support, I identified the activation signals that got members engaged, and channelled real member testimonials from Customer Advisory Boards into a refreshed pitch. I owned positioning and rollout for flagship events end to end, and built the enablement library (playbooks, talk tracks, objection handling, one-pagers) that let sales and support teams sell and service membership with confidence.",
+      result: "Those refreshed enablement materials helped beat the marketing revenue target, and flagship events pulled in 500+ attendees with priority cohorts filled above plan."
+    },
+    {
+      headline: "5% of riders knew carbon offsetting existed. We made it a habit, nationwide.",
+      statChip: "30M+ launch impressions",
+      title: "GoGreener Feature Launch",
+      org: "GoTo Group, Transport &middot; Product Marketing Executive",
+      tags: ["Product Marketing", "Sustainability", "Product Launch"],
+      categories: ["Brand & Campaigns", "Product Marketing"],
+      challenge: "Carbon offset awareness sat at just 5%, and current riders had no easy way in to see themselves as part of the solution.",
+      approach: "I owned go-to-market for a one-tap carbon offset toggle built into every ride booking, positioned under a campaign built around <em>&ldquo;plant a tree, on the way.&rdquo;</em> The launch ran across ATL and BTL channels: TV and digital ads, social media, a 15-strong influencer programme fronted by an environmental activist, in-app nudges and PR. I also led a public pledge initiative: for every 5,000 trees riders funded, the company matched with 5,000 more.",
+      result: "The launch drove 30M+ impressions in its window, reaching an estimated 40% of the target audience, with 300K+ impressions across the influencer programme and media placements landing 100% positive sentiment."
+    },
+    {
+      headline: "The thing keeping a chunk of never-users off online transport wasn't price. It was the driver.",
+      statChip: "91% share of voice",
+      title: "Close the Trust Gap",
+      org: "GoTo Group, Transport &middot; Product Marketing Executive",
+      tags: ["Brand Marketing", "Integrated Campaign"],
+      categories: ["Brand & Campaigns"],
+      challenge: "Our own research into non-users kept pointing at the same thing: price wasn't the top blocker, trust was. Most of the hesitation traced back to the driver: bad experiences, doubts about safety, uncertainty they'd know the route or show up on time. Dualists saw no real difference between us and the competition, so they defaulted to whoever was cheapest that day. Dependability was a solvable perception problem, sitting in the data the whole time.",
+      approach: "I built the campaign around the idea that for our drivers, every ride is a responsibility, not just a task, and backed it with proof, not just a tagline. A 30s manifesto film anchored the message across TV and OOH in 10 cities, while driver training initiatives (sign language, service excellence, road safety) gave the claim something to point to. To make brand love feel cultural rather than corporate, I partnered on a book collaboration with a bestselling local author, turning real driver stories into a limited-edition release, backed by a mixed tier of KOLs chosen for authenticity over follower count.",
+      result: "We took the majority TV share of voice against our closest competitor within the first two months, alongside strong OOH reach and near-universally positive media coverage. The book collaboration drove five-figure ebook downloads and overwhelmingly positive social sentiment. Most importantly, brand tracking showed we closed the perception gap on safety and service satisfaction, moving dependability from a stated risk into a measured strength."
+    },
+    {
+      headline: "Turning a competitor's early move into a research-led competitive advantage.",
+      statChip: "4 concepts tested, 1 shipped nationwide",
+      title: "Turning a Competitor's Move Into a Competitive Advantage",
+      org: "GoTo Group, Nationwide &middot; Product Marketing Executive",
+      tags: ["Competitive Intelligence", "Brand Marketing"],
+      categories: ["Brand & Campaigns", "Competitive Intelligence"],
+      challenge: "As post-lockdown mobility started recovering, a competitor got there first: they launched a nationwide campaign claiming the &ldquo;back to normal&rdquo; moment across digital, social and out-of-home before we did, and it was already showing up in transactional share.",
+      approach: "I led the competitive analysis on their campaign: mapping their creative territory against ours, and benchmarking brand perception on the two attributes that actually move online transport adoption, affordability and safety. Rather than copy their angle, I turned that analysis into a positioning framework that showed where their message left room open, briefed four creative concepts against it, and ran them through research scored on appeal, relevance and brand impact before picking the one that rated highest rather than the one that was fastest to produce. Once the gap in the market was clear, I helped compress the campaign timeline to launch sooner than originally planned, running nationwide ATL alongside regional out-of-home, KOL activity and point-of-interest takeovers across more than a dozen cities.",
+      result: "The competitive read reshaped both the message and the timeline: we moved the launch window up to close the gap rather than let an early-mover advantage compound, and the concept we shipped was the one research consistently rated most relevant and most likely to shift brand perception, not just the quickest one to ship."
+    },
+    {
+      headline: "A global fandom generates buzz on its own. Turning that into thousands of compliant, on-time deliveries is a different job entirely.",
+      statChip: "Approved &amp; shipped nationwide",
+      title: "BTS x GoTo Group: Demand Generation Across Legal, Tax, Risk and Product",
+      org: "GoTo Group, Nationwide &middot; Product Marketing Executive",
+      tags: ["Demand Generation", "Cross-Functional"],
+      categories: ["Brand & Campaigns", "Demand Gen & Partnerships"],
+      challenge: "A global celebrity partnership, built around the line <em>&ldquo;Pasti Ada Kejutan&rdquo;</em> (there's always a surprise), generates buzz on its own. Turning that into thousands of units of tracked, taxed and fairly distributed merchandise, without a data privacy misstep, is a different problem entirely.",
+      approach: "I worked on demand generation for the BTS x GoTo Group gift-with-purchase mission across GoRide, GoCar and GoFood, extended into Vietnam and Singapore with market-specific adaptations. Entry wasn't a simple sign-up: users had to complete real transport rides or GoFood orders within a set window to earn a raffle place, so the mechanic itself had to hold up under scrutiny. The campaign lived or died on cross-functional coordination: legal on the data-sharing agreement with the raffle vendor and licensor approvals, tax on ID collection for prize compliance, risk on fraud screening, and web and product on the raffle engine itself. I helped scope the mission mechanics, KOL roster and go-to-market plan that all of that infrastructure had to support.",
+      result: "I moved on from GoTo Group that August, and the campaign's live window ran that September, so I won't claim numbers I didn't see. What I can say: the mechanics, cross-functional data framework and creative direction I helped build were approved and carried into launch as planned, across all three markets."
+    },
+    {
+      headline: "Making one train partnership carry a whole growth channel.",
+      statChip: "2x weekly transacting users",
+      title: "GoTransit x KCI: Turning a Transit Partnership into a Growth Channel",
+      org: "GoTo Group, Jabodetabek &middot; Product Marketing Executive",
+      tags: ["Partnership Marketing", "Demand Generation"],
+      categories: ["Demand Gen & Partnerships"],
+      challenge: "Jakarta commuters were stitching together separate apps and payment methods just to get from home to a train station and back. GoTo Group wanted the full journey inside one booking, which meant negotiating physical ad space and a data integration with a public transport operator, not just running a marketing campaign.",
+      approach: "I worked on demand generation for the H1 2022 launch: securing branded placement across dozens of train carriages and stations through the KCI partnership, running always-on mission mechanics (single and multi-step, auto opt-in), KOL activations and PR, in coordination with legal on partnership terms and web and product on the ticketing integration.",
+      result: "The campaign hit its ticket-sales milestones within the launch window, roughly doubled GoTransit's weekly transacting users, and delivered strong impressions and media pickup with overwhelmingly positive sentiment."
+    },
+    {
+      headline: "Proving a sponsorship earns its budget, not just its seat count.",
+      statChip: "+14% vs. lead target",
+      title: "Sponsored B2B Webinar",
+      org: "The Alliance / CMO Alliance &middot; Product Marketing Executive",
+      tags: ["Demand Generation", "Event Marketing"],
+      categories: ["Demand Gen & Partnerships", "Event Marketing & Sales Enablement"],
+      challenge: "Sponsors want leads that convert into pipeline, not just seats filled. I needed to prove a single sponsored session could hit an ambitious, senior-level target without padding the numbers with the wrong audience.",
+      approach: "I ran demand generation for a sponsored B2B webinar on AI-powered marketing, targeting a senior ICP and leaning into the channels that actually convert that audience: direct traffic, Slack and LinkedIn.",
+      result: "We beat the lead target, with over a third of registrants at C-suite level, proof that sponsorship can outperform its own benchmark when the targeting is right."
+    }
+  ];
+
+  // ---------- Render filter chips ----------
+  const filterBar = document.getElementById('filter-bar');
+  let activeFilter = "All";
+
+  filters.forEach((f) => {
+    const chip = document.createElement('button');
+    chip.type = "button";
+    chip.className = "filter-chip text-xs uppercase tracking-wide px-4 py-2 rounded-full border border-maroon/25 text-maroon/80";
+    chip.textContent = f;
+    chip.setAttribute('aria-pressed', f === activeFilter ? 'true' : 'false');
+    chip.addEventListener('click', () => {
+      activeFilter = f;
+      [...filterBar.children].forEach(c => c.setAttribute('aria-pressed', c.textContent === f ? 'true' : 'false'));
+      applyFilter();
+    });
+    filterBar.appendChild(chip);
+  });
+
+  function applyFilter() {
+    document.querySelectorAll('.case-card').forEach(card => {
+      const cats = JSON.parse(card.dataset.categories);
+      const show = activeFilter === "All" || cats.includes(activeFilter);
+      card.classList.toggle('hide', !show);
+    });
+  }
+
+  // ---------- Render case study cards ----------
+  const caseGrid = document.getElementById('case-grid');
+  caseStudies.forEach((cs, i) => {
+    const tagsHtml = cs.tags.map(t => `<span class="text-xs border border-cream/40 text-cream rounded-full px-3 py-1">${t}</span>`).join('');
+    const card = document.createElement('button');
+    card.className = "case-card reveal card-hover text-left card-mesh text-cream rounded-2xl p-7 md:p-8 hover:shadow-xl transition-shadow flex flex-col justify-between h-80";
+    card.dataset.categories = JSON.stringify(cs.categories);
+    card.style.transitionDelay = (i * 0.06) + "s";
+    card.innerHTML = `
+      <div class="relative z-10">
+        <div class="flex flex-wrap gap-2 mb-5">${tagsHtml}</div>
+        <h3 class="font-display text-2xl font-medium leading-snug line-clamp-3">${cs.headline}</h3>
+      </div>
+      <div class="relative z-10">
+        <p class="text-sm font-semibold text-cream mb-2">${cs.statChip}</p>
+        <span class="text-xs uppercase tracking-wide text-orange font-semibold">View case study &rarr;</span>
+      </div>
+    `;
+    card.addEventListener('click', () => openCaseModal(cs));
+    caseGrid.appendChild(card);
+  });
+
+  function openCaseModal(cs) {
+    const tagsHtml = cs.tags.map(t => `<span class="text-xs border border-maroon/25 rounded-full px-3 py-1">${t}</span>`).join('');
+    openModal(`
+      <div class="flex flex-wrap gap-2 mb-5">${tagsHtml}</div>
+      <h3 class="font-display text-3xl font-medium mb-2">${cs.title}</h3>
+      <p class="text-xs uppercase tracking-wide text-maroon/50 mb-8">${cs.org}</p>
+      <div class="space-y-4 leading-relaxed">
+        <p><span class="text-orange font-semibold">Challenge.</span> ${cs.challenge}</p>
+        <p><span class="text-orange font-semibold">Approach.</span> ${cs.approach}</p>
+        <p><span class="text-orange font-semibold">Result.</span> ${cs.result}</p>
+      </div>
+    `);
+  }
+
+  // ---------- Modal engine ----------
+  const overlay = document.getElementById('overlay');
+  const modalBody = document.getElementById('modal-body');
+  const modalClose = document.getElementById('modal-close');
+
+  function openModal(html) {
+    modalBody.innerHTML = html;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  modalClose.addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+  // ---------- Reveal on scroll ----------
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
